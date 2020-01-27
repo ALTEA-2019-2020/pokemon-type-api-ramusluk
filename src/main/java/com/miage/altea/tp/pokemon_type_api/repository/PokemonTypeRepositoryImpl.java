@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class PokemonTypeRepositoryImpl implements PokemonTypeRepository {
@@ -55,16 +56,7 @@ public class PokemonTypeRepositoryImpl implements PokemonTypeRepository {
 
     @Override
     public List<PokemonType> findPokemonTypeByType(List<String> list) {
-        List<PokemonType> resultList = new ArrayList<>();
-        for (PokemonType pokemonType : pokemons) {
-            Boolean b = true;
-            for (String s : list) {
-                if (!pokemonType.getTypes().contains(s))
-                    b = false;
-            }
-            if (b)
-                resultList.add(pokemonType);
-        }
-        return resultList;
+        return pokemons.stream().filter(pokemonType -> pokemonType.getTypes().containsAll(list)).collect(Collectors.toList());
     }
+
 }
